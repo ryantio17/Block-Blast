@@ -15,6 +15,17 @@ public class Grid : MonoBehaviour
 
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
+    
+    private void OnEnable()
+    {
+            TheGameEvents.CheckIfShapeCanBePlaced += CheckIfShapeCanBePlaced;
+    }
+
+      private void OnDisable()
+    {
+        TheGameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
+    }
+
     void Start()
     {
         CreateGrid();
@@ -95,4 +106,17 @@ public class Grid : MonoBehaviour
             column_number++;
         }
    }
+
+   private void CheckIfShapeCanBePlaced()
+    {
+        foreach (var square in _gridSquares)
+        {
+            var gridSquare = square.GetComponent<GridSquare>();
+
+            if (gridSquare.CanWeUseThisSquare() == true)
+            {
+                gridSquare.ActivateSquare();
+            }
+        }
+    }
 }
