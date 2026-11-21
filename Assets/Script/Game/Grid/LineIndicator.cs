@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -32,6 +33,46 @@ public class LineIndicator : MonoBehaviour
         {57, 58, 59, 66, 67, 68, 75, 76, 77},
         {60, 61, 62, 69, 70, 71, 78, 79, 80}
     };
+
+    [HideInInspector]
+    public int[] columnIndexes = new int[9]
+    {
+        0,1,2,3,4,5,6,7,8
+    };
+
+    private (int, int) GetSquarePosition(int square_index)
+    {
+        int pos_row = -1;
+        int pos_col = -1;
+
+        for(int row = 0; row < 9; row++)
+        {
+            for(int col= 0; col <9; col++)
+            {
+                if(line_data[row, col] == square_index)
+                {
+                    pos_row = row;
+                    pos_col = col;
+                }
+            }
+        }
+
+        return (pos_row, pos_col);
+    }
+
+    public int[] GetVerticalLine(int square_index)
+    {
+        int[] line = new int[9];
+
+        var square_position_col = GetSquarePosition(square_index).Item2;
+
+        for(int index =0; index < 9; index++)
+        {
+            line[index] = line_data[index, square_position_col];
+        }
+
+        return line;
+    }
 
 
     public int GetGridSquareIndex(int square)

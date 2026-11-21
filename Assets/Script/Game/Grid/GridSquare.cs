@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GridSquare : MonoBehaviour
 {
     public Image hooverImage;
-    public Image ActiveImage;
+    public Image activeImage;
     public Image normalImage;
     public List<Sprite> normalImages;
 
@@ -35,9 +35,20 @@ public class GridSquare : MonoBehaviour
     public void ActivateSquare()
     {
         hooverImage.gameObject.SetActive(false);
-        ActiveImage.gameObject.SetActive(true);
+        activeImage.gameObject.SetActive(true);
         Selected = true;
         SquareOccupied = true;
+    }
+
+    public void Deactivate()
+    {
+        activeImage.gameObject.SetActive(false);
+    }
+
+    public void ClearOccupied()
+    {
+        Selected = false;
+        SquareOccupied = false;
     }
 
     public void SetImage(bool setFirstImage)

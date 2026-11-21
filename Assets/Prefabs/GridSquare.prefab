@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hooverImage: {fileID: 3844862374072238304}
-  ActiveImage: {fileID: 7382103856261019694}
+  activeImage: {fileID: 7382103856261019694}
   normalImage: {fileID: 7086058211640185303}
   normalImages:
   - {fileID: 21300000, guid: be2d4c4a6a75d454897e4bc14b285644, type: 3}
