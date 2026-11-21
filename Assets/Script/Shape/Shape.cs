@@ -37,11 +37,13 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private void OnEnable()
     {
         TheGameEvents.MoveShapeToStartPosition += MoveShapeToStartPosition;
+        TheGameEvents.SetShapeInactive += SetShapeInactive;
     }
 
     private void OnDisable()
     {
         TheGameEvents.MoveShapeToStartPosition -= MoveShapeToStartPosition;
+        TheGameEvents.SetShapeInactive-= SetShapeInactive;
     }
 
     public bool IsOnStartPosition()
@@ -70,6 +72,17 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
             }
         }
         _shapeActive = false;
+    }
+
+    private void SetShapeInactive()
+    {
+        if(IsOnStartPosition() == false && IsAnyOfShapeSquareActive())
+        {
+            foreach (var square in _currentShape)
+            {
+                square.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ActivateShape()
