@@ -16,4 +16,17 @@ public class ShapeStorage : MonoBehaviour
             shape.createShape(shapeData[shapeIndex]);
         }
     }
+
+    public Shape GetCurrentSelectedShape()
+    {
+        foreach (var shape in shapeList)
+        {
+            if(shape.IsOnStartPosition() == false && shape.IsAnyOfShapeSquareActive())
+                return shape;
+        }
+
+        Debug.LogError("There is no shape Selected");
+        return null;
+    }
+
 }

@@ -11,7 +11,6 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public Vector3 shapeSelectedScale;
     public Vector2 offset = new Vector2(0f, 700f);
     
-
     [HideInInspector]
     public ShapeData CurrentShapeData;
 
@@ -20,6 +19,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private RectTransform _transform;
     private bool _shapeDraggable = true;
     private Canvas _canvas;
+    private Vector3 _startPosition;
+    private bool _shapeActive = true;
 
     public void Awake()
     {
@@ -27,10 +28,54 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _transform = this.GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
         _shapeDraggable = true;
+        _startPosition = _transform.localPosition;
+        _shapeActive = true;
+    }
+
+    public bool IsOnStartPosition()
+    {
+        return _transform.localPosition == _startPosition;
+    }
+
+    public bool IsAnyOfShapeSquareActive()
+    {
+        foreach (var square in _currentShape)
+        {
+            if(square.gameObject.activeSelf)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void DeactivateShape()
+    {
+        if(_shapeActive)
+        {
+            foreach (var square in _currentShape)
+            {
+                square?.GetComponent<ShapeSquare>().DeactivateShape();
+            }
+        }
+        _shapeActive = false;
+    }
+
+    public void ActivateShape()
+    {
+        if(!_shapeActive)
+        {
+            foreach (var square in _currentShape)
+            {
+                square?.GetComponent<ShapeSquare>().ActivateShape();
+            }
+        }
+
+        _shapeActive = true;
     }
 
     public void RequestNewShape(ShapeData shapeData)
     {
+        transform.localPosition = _startPosition;
         createShape(shapeData);
     }
 
