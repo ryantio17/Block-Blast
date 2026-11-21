@@ -48,7 +48,9 @@ public class Grid : MonoBehaviour
         {
             for (var column = 0; column < columns; ++column)
             {
-                _gridSquares.Add(Instantiate(gridSquare) as GameObject); 
+                _gridSquares.Add(Instantiate(gridSquare) as GameObject);
+
+                _gridSquares[_gridSquares.Count -1].GetComponent<GridSquare>().SquareIndex = square_index;
                 _gridSquares[_gridSquares.Count -1].transform.SetParent(this.transform);
                 _gridSquares[_gridSquares.Count -1].transform.localScale = new Vector3(squareScale, squareScale, squareScale);
                 _gridSquares[_gridSquares.Count -1].GetComponent<GridSquare>().SetImage(square_index % 2 == 0);
@@ -109,16 +111,38 @@ public class Grid : MonoBehaviour
 
    private void CheckIfShapeCanBePlaced()
     {
+        var squareIndexes = new List<int>();
+        
         foreach (var square in _gridSquares)
         {
             var gridSquare = square.GetComponent<GridSquare>();
 
-            if (gridSquare.CanWeUseThisSquare() == true)
+            if (gridSquare.Selected && !gridSquare.SquareOccupied)
             {
-                gridSquare.ActivateSquare();
+                squareIndexes.Add(gridSquare.SquareIndex);
+                gridSquare.Selected = false;
+                //gridSquare.ActivateSquare();
             }
         }
 
-        shapeStorage.GetCurrentSelectedShape().DeactivateShape();
+        var currentSelectedShape = shapeStorage.GetCurrentSelectedShape();
+        if(currentSelectedShape == null) return; //there is no selected shape.
+
+        if(currentSelectedShape.TotalSquareNumber == squareIndexes.Count)
+        {
+            
+            foreach (var squareIndex in squareIndexes)
+            {
+                _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnBoard();
+            }
+
+            currentSelectedShape.DeactivateShape();
+        }
+        else
+        {
+            TheGameEvents.MoveShapeToStartPosition();
+        }
+
+
     }
 }
