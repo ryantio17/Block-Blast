@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TheGameEvents : MonoBehaviour
 {
+    public static Action<int> AddScores;
     public static Action CheckIfShapeCanBePlaced;
 
     public static Action MoveShapeToStartPosition;
