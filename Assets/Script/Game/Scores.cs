@@ -4,30 +4,68 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class BestScoreData
+{
+    public int score = 0;
+}
+
 public class Scores : MonoBehaviour
 {
     public Text scoreText;
 
+    private bool newBestScore_ = false;
+    private BestScoreData bestScores_ = new BestScoreData();
     private int currentScores_;
+
+    private string bestScoreKey = "bsdata";
+
+    private void Awake()
+    {
+        if(BinaryDataStream.Exist(bestScoreKey))
+        {
+            StartCoroutine(ReadDataFile());
+        }
+    }
+
+    private IEnumerator ReadDataFile()
+    {
+        bestScores_ = BinaryDataStream.Read<BestScoreData>(bestScoreKey);
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Read Best Scores = " + bestScores_.score);
+    }
     void Start()
     {
         currentScores_ = 0;
+        newBestScore_ = false;
         UpdateScoreText();
     }
 
     private void OnEnable()
     {
         TheGameEvents.AddScores += AddScores;
+        TheGameEvents.GameOver += SaveBestScores;
     }
 
     private void OnDisable()
     {
         TheGameEvents.AddScores -= AddScores;
+        TheGameEvents.GameOver -= SaveBestScores;
+    }
+
+    public void SaveBestScores(bool newBestScore)
+    {
+        BinaryDataStream.Save<BestScoreData>(bestScores_, bestScoreKey);
     }
 
     private void AddScores(int scores)
     {
         currentScores_ += scores;
+        if(currentScores_ > bestScores_.score)
+        {
+            newBestScore_ = true;
+            bestScores_.score = currentScores_;
+        }
         UpdateScoreText();
     }
 
