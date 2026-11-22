@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TheGameEvents : MonoBehaviour
 {
+    
+    public static Action<bool> GameOver;
     public static Action<int> AddScores;
     public static Action CheckIfShapeCanBePlaced;
 
