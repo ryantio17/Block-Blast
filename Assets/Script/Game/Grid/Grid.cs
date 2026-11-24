@@ -216,9 +216,9 @@ public class Grid : MonoBehaviour
 
         var completedLines = CheckIfSquaresAreCompleted(lines);
 
-        if(completedLines > 2)
+        if(completedLines >= 2)
         {
-            //TODO: Play bonus animation
+            TheGameEvents.ShowCongratulationsWritings();
         }
 
         var totalScore = 17 * completedLines;
