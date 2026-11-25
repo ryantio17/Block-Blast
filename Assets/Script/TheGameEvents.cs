@@ -21,4 +21,6 @@ public class TheGameEvents : MonoBehaviour
     public static Action<Config.SquareColor> UpdateSquareColor;
 
     public static Action ShowCongratulationsWritings;
+
+    public static Action<Config.SquareColor> ShowBonusScreen;
 }
