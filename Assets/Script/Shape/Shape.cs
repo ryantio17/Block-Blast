@@ -6,7 +6,13 @@ using UnityEngine.EventSystems;
 
 public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
     IPointerDownHandler
+    
 {
+    [Header("Audio SFX")]
+    public AudioClip holdSfx;   
+    public AudioClip placedSfx;
+    public AudioClip notplaceSfx;      // File suara saat balok dipegang
+    private AudioSource audioSource_;
     public GameObject squareShapeImage;
     public Vector3 shapeSelectedScale;
     public Vector2 offset = new Vector2(0f, 700f);
@@ -32,6 +38,13 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _shapeDraggable = true;
         _startPosition = _transform.localPosition;
         _shapeActive = true;
+
+        audioSource_ = GetComponent<AudioSource>(); //Audio
+        if (audioSource_ == null)
+        {
+            audioSource_ = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource_.playOnAwake = false;
     }
 
     private void OnEnable()
@@ -100,6 +113,11 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     public void RequestNewShape(ShapeData shapeData)
     {
+       if (_isDraggingThisShape && !IsOnStartPosition() && placedSfx != null && audioSource_ != null)
+        {
+            audioSource_.PlayOneShot(placedSfx);
+        }
+
         transform.localPosition = _startPosition;
         createShape(shapeData);
     }
@@ -267,16 +285,25 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+       
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
 
     }
-
+    private bool _wasPlacedThisTurn = false;
+    private bool _isDraggingThisShape = false;
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _isDraggingThisShape = true;
+
+        // Putar suara sekali saat balok mulai disentuh/dipegang
+        if (holdSfx != null && audioSource_ != null)
+        {
+            audioSource_.PlayOneShot(holdSfx);
+        }
+        
         this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
     }
 
@@ -296,7 +323,20 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void OnEndDrag(PointerEventData eventData)
     {
         this.GetComponent<RectTransform>().localScale = _shapeStartScale;
+        _wasPlacedThisTurn = false;
+
         TheGameEvents.CheckIfShapeCanBePlaced();
+
+       // Hanya bunyi jika balok INI yang barusan di-drag dan berhasil ditaruh
+        if (_isDraggingThisShape && !_wasPlacedThisTurn && !IsOnStartPosition())
+        {
+            if (placedSfx != null && audioSource_ != null)
+            {
+                audioSource_.PlayOneShot(placedSfx);
+            }
+        }
+
+        _isDraggingThisShape = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -306,6 +346,16 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     private void MoveShapeToStartPosition()
     {
+        // Hanya balok yang sedang di-drag yang boleh membunyikan notplaceSfx
+        if (_isDraggingThisShape && !IsOnStartPosition())
+        {
+            _wasPlacedThisTurn = true;
+
+            if (notplaceSfx != null && audioSource_ != null)
+            {
+                audioSource_.PlayOneShot(notplaceSfx);
+            }
+        }
         _transform.transform.localPosition = _startPosition;
     }
 }
