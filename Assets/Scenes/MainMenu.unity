@@ -164,7 +164,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f04979c9e7bea3b459255412f65d4987, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.845
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -654,6 +654,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd99631e463e6344be06f56690ba0ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicButtonImage: {fileID: 2125370473}
+  musicOnSprite: {fileID: 21300000, guid: 3b6bc93bddf4a2e4baabb940d61af791, type: 3}
+  musicOffSprite: {fileID: 21300000, guid: 1d7339428f0e7e542b9faf1210a9fb0a, type: 3}
 --- !u!1 &600773768
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +690,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1913981045}
+  - {fileID: 2125370471}
   m_Father: {fileID: 513274477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1402,7 +1405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1872823920}
---- !u!1 &1913981044
+--- !u!1 &2125370470
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1410,24 +1413,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1913981045}
-  - component: {fileID: 1913981048}
-  - component: {fileID: 1913981047}
-  - component: {fileID: 1913981046}
+  - component: {fileID: 2125370471}
+  - component: {fileID: 2125370474}
+  - component: {fileID: 2125370473}
+  - component: {fileID: 2125370472}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: MusicButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1913981045
+--- !u!224 &2125370471
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913981044}
+  m_GameObject: {fileID: 2125370470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1438,15 +1441,15 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 140.25, y: 140.5}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1913981046
+--- !u!114 &2125370472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913981044}
+  m_GameObject: {fileID: 2125370470}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -1480,17 +1483,29 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1913981047}
+  m_TargetGraphic: {fileID: 2125370473}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1913981047
+      m_Calls:
+      - m_Target: {fileID: 519420033}
+        m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
+        m_MethodName: ToggleMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2125370473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913981044}
+  m_GameObject: {fileID: 2125370470}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -1514,13 +1529,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1913981048
+--- !u!222 &2125370474
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913981044}
+  m_GameObject: {fileID: 2125370470}
   m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

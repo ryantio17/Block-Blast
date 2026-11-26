@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 
 public class Grid : MonoBehaviour
 {
+    [Header("Audio SFX")]
+    public AudioClip clearLineSfx; // Suara saat baris/kolom penuh dan hancur
+    private AudioSource audioSource_;
     public ShapeStorage shapeStorage;
     public int columns = 0;
     public int rows = 0;
@@ -37,6 +40,13 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
+    audioSource_ = GetComponent<AudioSource>();
+        if (audioSource_ == null)
+        {
+            audioSource_ = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource_.playOnAwake = false;
+
         _lineIndicator = GetComponent<LineIndicator>();
         CreateGrid();
         currentActiveSquareColor_ = squareTextureData.activeSquareTextures[0].squareColor;
@@ -66,6 +76,8 @@ public class Grid : MonoBehaviour
 
         return colors;
     }
+
+    
 
    private void CreateGrid()
    {
@@ -240,6 +252,11 @@ public class Grid : MonoBehaviour
 
         var completedLines = CheckIfSquaresAreCompleted(lines);
 
+        if (completedLines > 0 && clearLineSfx != null && audioSource_ != null)
+        {
+            audioSource_.PlayOneShot(clearLineSfx);
+        }
+
         if(completedLines >= 2)
         {
             TheGameEvents.ShowCongratulationsWritings();
@@ -284,6 +301,7 @@ public class Grid : MonoBehaviour
     private int CheckIfSquaresAreCompleted(List<int[]> data)
     {
         List<int[]>completedLines = new List<int[]>();
+        
 
         var linesCompleted = 0;
 
