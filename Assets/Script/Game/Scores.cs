@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -14,10 +14,27 @@ public class Scores : MonoBehaviour
 {
     public SquareTextureData squareTextureData;
     public Text scoreText;
-
+    
     private bool newBestScore_ = false;
     private BestScoreData bestScores_ = new BestScoreData();
     private int currentScores_;
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            bestScores_.score = 0;
+            newBestScore_ = false;
+            BinaryDataStream.Save<BestScoreData>(bestScores_, bestScoreKey);
+            TheGameEvents.UpdateBestScoreBar(currentScores_, bestScores_.score);
+            Debug.Log("Best Score lokal berhasil direset ke 0!");
+        }
+#endif
+    }
+
+    public int CurrentScores => currentScores_;
+    public bool IsNewBestScore => newBestScore_;
 
     private string bestScoreKey = "bsdata";
 

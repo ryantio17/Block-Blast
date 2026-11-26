@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOverPopUp : MonoBehaviour
 {
     public GameObject gameOverPopUp;
     public GameObject loosePopup;
     public GameObject newBestScorePopUp;
+
+    public Text currentScoreText;
+    public Scores scores;
 
     void Start()
     {
@@ -26,7 +30,14 @@ public class GameOverPopUp : MonoBehaviour
     private void OnGameOver(bool newBestScore)
     {
         gameOverPopUp.SetActive(true);
-        loosePopup.SetActive(false);
-        newBestScorePopUp.SetActive(true);
+        bool isActualNewBest = scores != null ? scores.IsNewBestScore : newBestScore;
+
+        loosePopup.SetActive(!isActualNewBest);
+        newBestScorePopUp.SetActive(isActualNewBest);
+
+        if (currentScoreText != null && scores != null)
+        {
+            currentScoreText.text = scores.CurrentScores.ToString();
+        }
     }
 }
